@@ -1,16 +1,22 @@
 *******************************************
 * Erica Sprott
 * Cleans choice of partners data from Veconlab website
-* Originally 2022-09-22
-* Updated 
+* Written 2022-09-22
+* Updated 2023-07-22
 *******************************************
-
-
-global cop_folder "C:\Users\ers725\Documents\Choice of Partners\\"
 
 clear all
 
-import excel "${cop_folder}choice_of_partners_data.xlsx", firstrow
+*define user and filepaths
+if "`c(username)'" == "ers725" {
+	global user "/Users/ers725/Opportunity Insights Dropbox/Erica Sprott/" 
+	
+}
+
+global cop_folder "${user}/Choice of Partners/"
+global data "${cop_folder}data/"
+
+import excel "${data}choice_of_partners_data.xlsx", firstrow
 capture drop OtherHistory 
 capture drop MarkedInkBombString
 rename Session session
@@ -48,10 +54,10 @@ replace partner_scale = 0 if partner_scale == -1
 * Gender: 0 if male, 1 if female
 
 gen gender = 0
-replace gender = 1 if id == 2| id == 3 | id == 4 | id == 5 | id == 9 | id == 10 | id == 11 | id == 12 | id == 8 
+replace gender = 1 if id == 2| id == 3 | id == 4 | id == 5 | id == 6 | id == 7 | id == 8 
 
 local sess = "session[1]"
 local sess2: display `sess'
 
 
-export excel "${cop_folder}`sess2'.xlsx", firstrow(var) replace
+export excel "${data}`sess2'.xlsx", firstrow(var) replace
